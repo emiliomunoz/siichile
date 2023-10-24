@@ -5,8 +5,7 @@
 > - Rubro de actividad
 > - Subrubro de actividad
 
-> Se realizó corrección de errores asociadas a funciones y componentes deprecados.
-> **Todos**: Reemplazo de componente guzzlehttp/guzzle deprecado. 
+> Se realizó corrección de errores asociadas a funciones y se reemplazaron dependencias deprecadas.
 
 
 Port de la gema [Sii Chile](https://github.com/sagmor/sii_chile)
@@ -28,11 +27,13 @@ var_dump($consulta->sii());
 
 ## Salida
 
-Una vez exitosa la petición, se retorna un arreglo asociativo con 2 propiedades:
+Una vez exitosa la petición, se retorna un arreglo asociativo con 3 propiedades:
 
 * razonSocial: Es un string que contiene la razon social.
 
-* actividades: Es un arreglo que contiene todas las actividades asociadas al rut, las cuales a su vez contienen las claves *giro*, *codigo*, *categoria*, *afecta*.
+* inicioActividades: String que contiene la fecha de inicio de actividades registrada en SII.
+
+* actividades: Es un arreglo que contiene todas las actividades asociadas al rut, las cuales a su vez contienen las claves *giro*, *codigo*, *categoria*, *afecta*, *rubro* y *subrubro* (estos últimos, de acuerdo a https://www.sii.cl/ayudas/ayudas_por_servicios/1956-codigos-1959.html).
 
 ![Output](/screenshots/output.png?raw=true "Sii respuesta")
 
@@ -47,8 +48,8 @@ Ejemplo de rut valido:
 
 ## Dependencias
 
-* [Guzzle](https://github.com/guzzle/guzzle)
-* [DomCrawler](https://github.com/symfony/DomCrawler)
+* [symfony/http-client](https://symfony.com/doc/current/http_client.html)
+* [symfony/dom-crawler](https://symfony.com/doc/current/components/dom_crawler.html)
 
 ## Tests
 
