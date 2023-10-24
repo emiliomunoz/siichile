@@ -1,5 +1,13 @@
 # SII Chile
 ->FORK DE PROYECTO https://github.com/rodrigore/sii_chile
+> Se incorporó al proyecto original:
+> - Fecha de inicio de actividades
+> - Rubro de actividad
+> - Subrubro de actividad
+
+> Se realizó corrección de errores asociadas a funciones y componentes deprecados.
+> **Todos**: Reemplazo de componente guzzlehttp/guzzle deprecado. 
+
 
 Port de la gema [Sii Chile](https://github.com/sagmor/sii_chile)
 
