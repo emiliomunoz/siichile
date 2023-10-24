@@ -58,11 +58,17 @@ class Consulta
         $actividades = [];
         $crawler->filterXPath(self::XPATH_ACTIVITIES)->each(function (Crawler $node, $i) use (&$actividades) {
             if ($i > 0) {
+                $codigo = $node->filterXPath('//td[2]/font')->text();
+                $subrubro = Giro::getSubRubroByActividad($codigo);
+                $rubro = Giro::getRubroById($subrubro['rubro_id']);
+
                 $actividades[] = [
                     'giro'      => $node->filterXPath('//td[1]/font')->text(),
-                    'codigo'    => (int)$node->filterXPath('//td[2]/font')->text(),
+                    'codigo'    => $codigo,
                     'categoria' => $node->filterXPath('//td[3]/font')->text(),
-                    'afecta'    => $node->filterXPath('//td[4]/font')->text() == 'Si'
+                    'afecta'    => $node->filterXPath('//td[4]/font')->text() == 'Si',
+                    'rubro'     => $rubro['nombre'],
+                    'subrubro'  => $subrubro['nombre']
                 ];
             }
         });

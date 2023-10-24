@@ -30,8 +30,8 @@ class Rut
     private function getCodeFromNumber($number)
     {
         $s = 1;
-        for ($m = 0; $number != 0; $number /= 10) {
-            $s = ($s + (int)($number % 10) * (9 - $m++ % 6)) % 11;  // Forzamos la conversión a entero aquí
+        for ($m = 0; $number != 0; $number = floor($number / 10)) {
+            $s = ($s + (int)($number % 10) * (9 - $m++ % 6)) % 11;
         }
         return chr($s ? $s + 47 : 75);
     }
