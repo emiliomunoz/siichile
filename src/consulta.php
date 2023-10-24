@@ -1,6 +1,6 @@
 <?php namespace Emiliomunoz\SIIChile;
 
-use GuzzleHttp\Client;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\DomCrawler\Crawler;
 
 class Consulta
@@ -13,7 +13,7 @@ class Consulta
     public function __construct($rut)
     {
         $this->rut = new Rut($rut);
-        $this->client = new Client(['verify' => false]);
+        $this->client = HttpClient::create(['verify_peer' => false]);
     }
 
     public function sii()
@@ -24,21 +24,25 @@ class Consulta
     private function fetch()
     {
         $captcha = $this->fetchCaptcha();
-        $request = $this->client->post('https://zeus.sii.cl/cvc_cgi/stc/getstc', ['body' => [
-            'RUT' => $this->rut->number,
-            'DV'  => $this->rut->code,
-            'PRG' => 'STC',
-            'OPC' => 'NOR',
-            'txt_code' => $captcha[0],
-            'txt_captcha' => $captcha[1]
-        ]]);
-        return $request->getBody()->getContents();
+        $response = $this->client->request('POST', 'https://zeus.sii.cl/cvc_cgi/stc/getstc', [
+            'body' => [
+                'RUT' => $this->rut->number,
+                'DV'  => $this->rut->code,
+                'PRG' => 'STC',
+                'OPC' => 'NOR',
+                'txt_code' => $captcha[0],
+                'txt_captcha' => $captcha[1]
+            ]
+        ]);
+        return $response->getContent();
     }
 
     private function fetchCaptcha()
     {
-        $request = $this->client->post('https://zeus.sii.cl/cvc_cgi/stc/CViewCaptcha.cgi', ['body' => ['oper' => 0]]);
-        $json = $request->json();
+        $response = $this->client->request('POST', 'https://zeus.sii.cl/cvc_cgi/stc/CViewCaptcha.cgi', [
+            'body' => ['oper' => 0]
+        ]);
+        $json = json_decode($response->getContent(), true);
         $code = substr(base64_decode($json["txtCaptcha"]), 36, 4);
         $captcha = $json["txtCaptcha"];
         return [$code, $captcha];
