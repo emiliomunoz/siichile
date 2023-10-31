@@ -20,5 +20,10 @@
         "psr-4": {
             "Emiliomunoz\\SIIChile\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Emiliomunoz\\SIIChile\\": "src/"
+        }
     }
 }
